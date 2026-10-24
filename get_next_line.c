@@ -6,7 +6,7 @@
 /*   By: oabu-awa <oabu-awa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/19 16:53:00 by oabu-awa          #+#    #+#             */
-/*   Updated: 2026/10/23 19:15:47 by oabu-awa         ###   ########.fr       */
+/*   Updated: 2026/10/24 16:10:47 by oabu-awa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,30 @@ static char	*read_str(int fd, char *str)
 	}
 	free(tmp);
 	return (str);
+}
+
+static char	*get_line(char *str)
+{
+	char	*tmp;
+	size_t	count;
+	size_t	i;
+
+	if (!str || !str[0])
+		return (NULL);
+	count = 0;
+	while (str[count] != '\n' && str[count])
+		count++;
+	if (str[count] == '\n')
+		count++;
+	tmp = malloc(count + 1);
+	if (!tmp)
+		return (NULL);
+	i = 0;
+	while (i < count)
+	{
+		tmp[i] = str[i];
+		i++;
+	}
+	tmp[i] = '\0';
+	return (tmp);
 }
