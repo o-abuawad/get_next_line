@@ -6,7 +6,7 @@
 /*   By: oabu-awa <oabu-awa@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/19 16:53:00 by oabu-awa          #+#    #+#             */
-/*   Updated: 2026/10/24 16:10:47 by oabu-awa         ###   ########.fr       */
+/*   Updated: 2026/10/25 11:35:47 by oabu-awa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,54 @@ static char	*get_line(char *str)
 	}
 	tmp[i] = '\0';
 	return (tmp);
+}
+
+static char	*next_line(char *str)
+{
+	size_t	count;
+	size_t	i;
+	char	*tmp;
+
+	count = 0;
+	while (str[count] && str[count] != '\n')
+		count++;
+	if (!str[count])
+	{
+		free(str);
+		return (NULL);
+	}
+	count++;
+	tmp = malloc((ft_strlen(str) - count) + 1);
+	if (!tmp)
+	{
+		free(str);
+		return (NULL);
+	}
+	i = 0;
+	while (str[count])
+		tmp[i++] = str[count++];
+	tmp[i] = '\0';
+	free(str);
+	return (tmp);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*str;
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	str = read_str(fd, str);
+	if (!str)
+		return (NULL);
+	line = get_line(str);
+	if (!line)
+	{
+		free(str);
+		str = NULL;
+		return (NULL);
+	}
+	str = next_line(str);
+	return (line);
 }
