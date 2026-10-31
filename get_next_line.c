@@ -12,6 +12,13 @@
 
 #include "get_next_line.h"
 
+static char	*free_both(char *s1, char *s2)
+{
+	free(s1);
+	free(s2);
+	return (NULL);
+}
+
 static char	*read_str(int fd, char *str)
 {
 	ssize_t	bytes;
@@ -20,21 +27,16 @@ static char	*read_str(int fd, char *str)
 	bytes = 1;
 	tmp = malloc(BUFFER_SIZE + 1);
 	if (!tmp)
-	{
-		free(str);
-		return (NULL);
-	}
+		return (free_both(str, NULL));
 	while (!ft_strchr(str, '\n') && bytes > 0)
 	{
 		bytes = read(fd, tmp, BUFFER_SIZE);
 		if (bytes == -1)
-		{
-			free(tmp);
-			free(str);
-			return (NULL);
-		}
+			return (free_both(tmp, str));
 		tmp[bytes] = '\0';
 		str = ft_strjoin(str, tmp);
+		if (!str)
+			return (free_both(tmp, NULL));
 	}
 	free(tmp);
 	return (str);

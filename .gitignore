@@ -10,6 +10,8 @@
 *.exe
 test
 test_runner
+test_bonus
+test_bonus.c
 
 # Precompiled headers
 *.gch
